@@ -1,0 +1,233 @@
+mysql> select * from emp;
++------+--------+------+------+
+| eno  | enm    | dno  | mgr  |
++------+--------+------+------+
+|  101 | Pooja  |   10 |  103 |
+|  102 | Anis   |   20 |  103 |
+|  103 | Aarti  |   30 |  105 |
+|  104 | Sushma |   10 |  105 |
+|  105 | Sonali |   10 |  106 |
+|  106 | Amol   |   10 |  103 |
++------+--------+------+------+
+6 rows in set (0.00 sec)
+
+mysql> select enm as "Pooja's Manager" from emp where eno=(select mgr from emp where enm='Pooja');
++-----------------+
+| Pooja's Manager |
++-----------------+
+| Aarti           |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select e.enm,m.enm from emp e,emp m where e.mgr=m.eno and e.enm='Pooja';
++-------+-------+
+| enm   | enm   |
++-------+-------+
+| Pooja | Aarti |
++-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select e.enm as "Employee Name",m.enm as "Employee Manager" from emp e,emp m where e.mgr=m.eno and e.enm='Pooja';
++---------------+------------------+
+| Employee Name | Employee Manager |
++---------------+------------------+
+| Pooja         | Aarti            |
++---------------+------------------+
+1 row in set (0.00 sec)
+
+mysql> select e.enm as "Employee Name",m.enm as "Employee Manager",mm.enm as "Empl Manager's Manager" from emp e, emp m, emp mm where e.mgr=m.eno and m.mgr=mm.eno and e.enm='Pooja';
++---------------+------------------+------------------------+
+| Employee Name | Employee Manager | Empl Manager's Manager |
++---------------+------------------+------------------------+
+| Pooja         | Aarti            | Sonali                 |
++---------------+------------------+------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp where mgr=(select eno from emp where enm='Aarti');
++------+-------+------+------+
+| eno  | enm   | dno  | mgr  |
++------+-------+------+------+
+|  101 | Pooja |   10 |  103 |
+|  102 | Anis  |   20 |  103 |
+|  106 | Amol  |   10 |  103 |
++------+-------+------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from dpt;
++------+-----------+
+| dno  | dnm       |
++------+-----------+
+|   10 | Sales     |
+|   20 | Marketing |
+|   30 | HR        |
++------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from empl;
++------+-----------+------+
+| eno  | enm       | dno  |
++------+-----------+------+
+|  101 | Alice     |   20 |
+|  102 | James     |   10 |
+|  103 | John      |   20 |
+|  104 | Kit       |   30 |
+|  105 | Katherine |   10 |
+|  106 | Joey      |   30 |
+|  107 | Pheobe    |   10 |
+|  108 | Sheldon   |   30 |
+|  109 | Penny     |   20 |
++------+-----------+------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emp,dpt; //Cross Join
+
++------+--------+------+------+------+-----------+
+| eno  | enm    | dno  | mgr  | dno  | dnm       |
++------+--------+------+------+------+-----------+
+|  101 | Pooja  |   10 |  103 |   10 | Sales     |
+|  101 | Pooja  |   10 |  103 |   20 | Marketing |
+|  101 | Pooja  |   10 |  103 |   30 | HR        |
+|  102 | Anis   |   20 |  103 |   10 | Sales     |
+|  102 | Anis   |   20 |  103 |   20 | Marketing |
+|  102 | Anis   |   20 |  103 |   30 | HR        |
+|  103 | Aarti  |   30 |  105 |   10 | Sales     |
+|  103 | Aarti  |   30 |  105 |   20 | Marketing |
+|  103 | Aarti  |   30 |  105 |   30 | HR        |
+|  104 | Sushma |   10 |  105 |   10 | Sales     |
+|  104 | Sushma |   10 |  105 |   20 | Marketing |
+|  104 | Sushma |   10 |  105 |   30 | HR        |
+|  105 | Sonali |   10 |  106 |   10 | Sales     |
+|  105 | Sonali |   10 |  106 |   20 | Marketing |
+|  105 | Sonali |   10 |  106 |   30 | HR        |
+|  106 | Amol   |   10 |  103 |   10 | Sales     |
+|  106 | Amol   |   10 |  103 |   20 | Marketing |
+|  106 | Amol   |   10 |  103 |   30 | HR        |
++------+--------+------+------+------+-----------+
+18 rows in set (0.00 sec)
+
+mysql> select eno,enm,empl.dno,dnm from empl,dpt where empl.dno=dpt.dno and enm='Sheldon';//Equi Join with condition
++------+---------+------+------+
+| eno  | enm     | dno  | dnm  |
++------+---------+------+------+
+|  108 | Sheldon |   30 | HR   |
++------+---------+------+------+
+1 row in set (0.00 sec)
+
+mysql> select eno,enm,empl.dno,dnm from empl,dpt where empl.dno=dpt.dno;//Equi Join
++------+-----------+------+-----------+
+| eno  | enm       | dno  | dnm       |
++------+-----------+------+-----------+
+|  101 | Alice     |   20 | Marketing |
+|  102 | James     |   10 | Sales     |
+|  103 | John      |   20 | Marketing |
+|  104 | Kit       |   30 | HR        |
+|  105 | Katherine |   10 | Sales     |
+|  106 | Joey      |   30 | HR        |
+|  107 | Pheobe    |   10 | Sales     |
+|  108 | Sheldon   |   30 | HR        |
+|  109 | Penny     |   20 | Marketing |
++------+-----------+------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> insert into empl values(110,'Raj',70);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into dpt values(40,'IT');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select eno,enm,empl.dno,dnm from empl inner join dpt on empl.dno=dpt.dno;//Inner Join
++------+-----------+------+-----------+
+| eno  | enm       | dno  | dnm       |
++------+-----------+------+-----------+
+|  101 | Alice     |   20 | Marketing |
+|  102 | James     |   10 | Sales     |
+|  103 | John      |   20 | Marketing |
+|  104 | Kit       |   30 | HR        |
+|  105 | Katherine |   10 | Sales     |
+|  106 | Joey      |   30 | HR        |
+|  107 | Pheobe    |   10 | Sales     |
+|  108 | Sheldon   |   30 | HR        |
+|  109 | Penny     |   20 | Marketing |
++------+-----------+------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> select eno,enm,empl.dno,dnm from empl left outer join dpt on empl.dno=dpt.dno;//Left outer Join 
++------+-----------+------+-----------+
+| eno  | enm       | dno  | dnm       |
++------+-----------+------+-----------+
+|  102 | James     |   10 | Sales     |
+|  105 | Katherine |   10 | Sales     |
+|  107 | Pheobe    |   10 | Sales     |
+|  101 | Alice     |   20 | Marketing |
+|  103 | John      |   20 | Marketing |
+|  109 | Penny     |   20 | Marketing |
+|  104 | Kit       |   30 | HR        |
+|  106 | Joey      |   30 | HR        |
+|  108 | Sheldon   |   30 | HR        |
+|  110 | Raj       |   70 | NULL      |
++------+-----------+------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select eno,enm,empl.dno,dnm from empl right outer join dpt on empl.dno=dpt.dno;//right outer join
++------+-----------+------+-----------+
+| eno  | enm       | dno  | dnm       |
++------+-----------+------+-----------+
+|  101 | Alice     |   20 | Marketing |
+|  102 | James     |   10 | Sales     |
+|  103 | John      |   20 | Marketing |
+|  104 | Kit       |   30 | HR        |
+|  105 | Katherine |   10 | Sales     |
+|  106 | Joey      |   30 | HR        |
+|  107 | Pheobe    |   10 | Sales     |
+|  108 | Sheldon   |   30 | HR        |
+|  109 | Penny     |   20 | Marketing |
+| NULL | NULL      | NULL | IT        |
++------+-----------+------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from empl cross join dpt;//Cross Join
++------+-----------+------+------+-----------+
+| eno  | enm       | dno  | dno  | dnm       |
++------+-----------+------+------+-----------+
+|  101 | Alice     |   20 |   10 | Sales     |
+|  101 | Alice     |   20 |   20 | Marketing |
+|  101 | Alice     |   20 |   30 | HR        |
+|  101 | Alice     |   20 |   40 | IT        |
+|  102 | James     |   10 |   10 | Sales     |
+|  102 | James     |   10 |   20 | Marketing |
+|  102 | James     |   10 |   30 | HR        |
+|  102 | James     |   10 |   40 | IT        |
+|  103 | John      |   20 |   10 | Sales     |
+|  103 | John      |   20 |   20 | Marketing |
+|  103 | John      |   20 |   30 | HR        |
+|  103 | John      |   20 |   40 | IT        |
+|  104 | Kit       |   30 |   10 | Sales     |
+|  104 | Kit       |   30 |   20 | Marketing |
+|  104 | Kit       |   30 |   30 | HR        |
+|  104 | Kit       |   30 |   40 | IT        |
+|  105 | Katherine |   10 |   10 | Sales     |
+|  105 | Katherine |   10 |   20 | Marketing |
+|  105 | Katherine |   10 |   30 | HR        |
+|  105 | Katherine |   10 |   40 | IT        |
+|  106 | Joey      |   30 |   10 | Sales     |
+|  106 | Joey      |   30 |   20 | Marketing |
+|  106 | Joey      |   30 |   30 | HR        |
+|  106 | Joey      |   30 |   40 | IT        |
+|  107 | Pheobe    |   10 |   10 | Sales     |
+|  107 | Pheobe    |   10 |   20 | Marketing |
+|  107 | Pheobe    |   10 |   30 | HR        |
+|  107 | Pheobe    |   10 |   40 | IT        |
+|  108 | Sheldon   |   30 |   10 | Sales     |
+|  108 | Sheldon   |   30 |   20 | Marketing |
+|  108 | Sheldon   |   30 |   30 | HR        |
+|  108 | Sheldon   |   30 |   40 | IT        |
+|  109 | Penny     |   20 |   10 | Sales     |
+|  109 | Penny     |   20 |   20 | Marketing |
+|  109 | Penny     |   20 |   30 | HR        |
+|  109 | Penny     |   20 |   40 | IT        |
+|  110 | Raj       |   70 |   10 | Sales     |
+|  110 | Raj       |   70 |   20 | Marketing |
+|  110 | Raj       |   70 |   30 | HR        |
+|  110 | Raj       |   70 |   40 | IT        |
++------+-----------+------+------+-----------+
+40 rows in set (0.00 sec)

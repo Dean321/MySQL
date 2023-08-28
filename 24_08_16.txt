@@ -1,0 +1,188 @@
+mysql> select dno,count(*) from empl group by dno;
++------+----------+
+| dno  | count(*) |
++------+----------+
+|   10 |        3 |
+|   20 |        3 |
+|   30 |        3 |
+|   70 |        1 |
++------+----------+
+4 rows in set (0.06 sec)
+
+mysql> select dno,count(*) from empl group by dno having dno=30;
++------+----------+
+| dno  | count(*) |
++------+----------+
+|   30 |        3 |
++------+----------+
+1 row in set (0.00 sec)
+
+mysql> select dno,count(*) from empl group by dno having count(*)>2;
++------+----------+
+| dno  | count(*) |
++------+----------+
+|   10 |        3 |
+|   20 |        3 |
+|   30 |        3 |
++------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select dnm,sum(sal) from empl inner join dpt on empl.dno=dpt.dno group by dpt.dno;
++-----------+----------+
+| dnm       | sum(sal) |
++-----------+----------+
+| Sales     |    33000 |
+| Marketing |    60000 |
+| HR        |    30000 |
++-----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select enm from empl where enm like "%e";
++-----------+
+| enm       |
++-----------+
+| Alice     |
+| Katherine |
+| Pheobe    |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> select enm from empl where enm like "%e%";
++-----------+
+| enm       |
++-----------+
+| Alice     |
+| James     |
+| Katherine |
+| Joey      |
+| Pheobe    |
+| Sheldon   |
+| Penny     |
++-----------+
+7 rows in set (0.00 sec)
+
+mysql> select enm from empl where enm like "_a%";
++-----------+
+| enm       |
++-----------+
+| James     |
+| Katherine |
+| Raj       |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> select enm from empl where enm like "_a%e%";
++-----------+
+| enm       |
++-----------+
+| James     |
+| Katherine |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select enm from empl where enm like "_a%E%";
++-----------+
+| enm       |
++-----------+
+| James     |
+| Katherine |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from empl;
++------+-----------+------+-------+
+| eno  | enm       | dno  | sal   |
++------+-----------+------+-------+
+|  101 | Alice     |   20 | 20000 |
+|  102 | James     |   10 | 11000 |
+|  103 | John      |   20 | 20000 |
+|  104 | Kit       |   30 | 10000 |
+|  105 | Katherine |   10 | 11000 |
+|  106 | Joey      |   30 | 10000 |
+|  107 | Pheobe    |   10 | 11000 |
+|  108 | Sheldon   |   30 | 10000 |
+|  109 | Penny     |   20 | 20000 |
+|  110 | Raj       |   70 |  5000 |
++------+-----------+------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select * from empl where sal between 11000 and 20000;//print records whose salary is in between 11000 and 20000
++------+-----------+------+-------+
+| eno  | enm       | dno  | sal   |
++------+-----------+------+-------+
+|  101 | Alice     |   20 | 20000 |
+|  102 | James     |   10 | 11000 |
+|  103 | John      |   20 | 20000 |
+|  105 | Katherine |   10 | 11000 |
+|  107 | Pheobe    |   10 | 11000 |
+|  109 | Penny     |   20 | 20000 |
++------+-----------+------+-------+
+6 rows in set (0.08 sec)
+
+mysql> select upper(enm) from empl;//Print in Upper-case
++------------+
+| upper(enm) |
++------------+
+| ALICE      |
+| JAMES      |
+| JOHN       |
+| KIT        |
+| KATHERINE  |
+| JOEY       |
+| PHEOBE     |
+| SHELDON    |
+| PENNY      |
+| RAJ        |
++------------+
+10 rows in set (0.05 sec)
+
+mysql> select ucase(enm) from empl;//Print in Upper-case
++------------+
+| ucase(enm) |
++------------+
+| ALICE      |
+| JAMES      |
+| JOHN       |
+| KIT        |
+| KATHERINE  |
+| JOEY       |
+| PHEOBE     |
+| SHELDON    |
+| PENNY      |
+| RAJ        |
++------------+
+10 rows in set (0.00 sec)
+
+mysql> select lower(enm) from empl;//Print in Lower-case
++------------+
+| lower(enm) |
++------------+
+| alice      |
+| james      |
+| john       |
+| kit        |
+| katherine  |
+| joey       |
+| pheobe     |
+| sheldon    |
+| penny      |
+| raj        |
++------------+
+10 rows in set (0.00 sec)
+
+mysql> select lcase(enm) from empl;//Print in Lower-case
++------------+
+| lcase(enm) |
++------------+
+| alice      |
+| james      |
+| john       |
+| kit        |
+| katherine  |
+| joey       |
+| pheobe     |
+| sheldon    |
+| penny      |
+| raj        |
++------------+
+10 rows in set (0.00 sec)
